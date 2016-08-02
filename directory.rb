@@ -1,7 +1,5 @@
 # put students into an array
 students = [
-  "The students of Villains Academy",
-  "-------------",
   "Dr. Hannibal Lecter",
   "Darth Vader",
   "Nurse Ratched",
@@ -21,4 +19,4 @@ students.each do |student|
   puts student
 end
 #print total number of students
-puts "Overall, we have #{student.count} great students"
+puts "Overall, we have #{students.count} great students"
