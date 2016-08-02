@@ -4,10 +4,15 @@ def input_students
   puts "To finish, simply hit return twice"
   #create an empty array
   students = []
+  default_cohort = :november
   name = gets.chomp
+  #while name of student is non-zero
   while !name.empty?
-    # add the student hash to the array
-    students << {name: name, cohort: :november}
+    # ask for the cohort
+    puts "Please enter cohort of the student #{name}"
+    cohort_input = gets.chomp
+    cohort = (cohort_input == "" ? default_cohort : cohort_input.downcase.to_sym)
+    students << {name: name, cohort: cohort}
     puts "Now we have #{students.count} student#{students.count == 1 ? "" : "s"}"
     name = gets.chomp
   end
