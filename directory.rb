@@ -22,11 +22,11 @@ end
 
 #define printing names method
 def print(students)
-  puts "Enter the letter you wish to match names of: "
-  letter = gets.chomp
-  matching_letter = /^#{letter.upcase}/
-  students.each do |student|
-    puts "#{student[:name]} (#{student[:cohort]} cohort)" if student[:name] =~ matching_letter
+  index=0
+  while index < students.length
+    student = students[index]
+    puts "#{student[:name]} (#{student[:cohort]} cohort)"
+    index += 1
   end
 end
 
