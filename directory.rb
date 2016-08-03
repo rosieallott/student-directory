@@ -47,10 +47,30 @@ def print_footer(students)
   puts "Overall, we have #{students.count} great student#{students.count == 1 ? "" : "s"}"
 end
 
-#call the methods in order
-students = input_students
-if students != []
-  print_header
-  print(students)
-  print_footer(students)
-end 
+def interactive_menu
+  students = []
+  loop do
+    #1. print menu
+    puts "What would you like to do?"
+    puts "1. Input the students"
+    puts "2. Show the students"
+    puts "9. Exit"
+    #save input to variable
+    selection = gets.chomp
+    #implement what user asked
+    case selection
+      when "1"
+        students = input_students
+      when "2"
+        print_header
+        print(students)
+        print_footer(students)
+      when "9"
+        exit #end the programme
+      else
+        puts "I didn't understand you"
+      end
+    end
+  end
+
+  interactive_menu
