@@ -49,6 +49,8 @@ end
 
 #call the methods in order
 students = input_students
-print_header
-print(students)
-print_footer(students)
+if students != []
+  print_header
+  print(students)
+  print_footer(students)
+end 
