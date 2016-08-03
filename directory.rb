@@ -7,9 +7,11 @@ def input_students
   name = gets.chomp
   #while name of student is non-zero
   while !name.empty?
-    # ask for the cohort
-    puts "Please enter cohort of the student #{name}"
-    students << {name: name, cohort: :november}
+    # ask for the other information
+    puts "Please enter hobby and height - press return after each"
+    hobby = gets.chomp
+    height = gets.chomp
+    students << {name: name, cohort: :november, hobbies: hobby, height: height}
     puts "Now we have #{students.count} student#{students.count == 1 ? "" : "s"}"
     name = gets.chomp
   end
@@ -18,14 +20,14 @@ end
 
 #define header method
 def print_header
-  puts "The students of Villains Academy".center(50)
-  puts "----------".center(50)
+  puts "The students of Villains Academy"
+  puts "----------"
 end
 
 #define printing names method
 def print(students)
   students.each do |student|
-    puts "#{student[:name]} (#{student[:cohort]} cohort)".center(50)
+    puts "#{student[:name]} (#{student[:cohort]} cohort) - likes #{student[:hobbies]}"
   end
 end
 
