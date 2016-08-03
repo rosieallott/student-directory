@@ -2,15 +2,17 @@
 def input_students
   puts "Please enter the names of the students"
   puts "To finish, simply hit return twice"
-  #create an empty array
+  #create an empty array and define default cohort/ask for input
   students = []
-  #replace "chomp" method
-  name_entry = gets
-  name = name_entry.gsub(/\n/,"")
+  default_cohort = :november
+  name = gets.chomp
   #while name of student is non-zero
   while !name.empty?
-    # ask for the other information
-    students << {name: name, cohort: :november}
+    # ask for the cohort
+    puts "Please enter cohort of student #{name}"
+    cohort_input = gets.chomp
+    cohort = (cohort_input == "" ? default_cohort : cohort_input.downcase.to_sym)
+    students << {name: name, cohort: cohort}
     puts "Now we have #{students.count} student#{students.count == 1 ? "" : "s"}"
     name = gets.chomp
   end
@@ -23,10 +25,20 @@ def print_header
   puts "----------"
 end
 
-#define printing names method
+#print names method
 def print(students)
-  students.each do |student|
-    puts "#{student[:name]} (#{student[:cohort]} cohort)"
+  #find all the cohorts first
+  cohorts = []
+  students.map do |student|
+    cohorts << student[:cohort]
+    cohorts = cohorts.uniq
+  end
+  cohorts.each do |cohort|
+    puts "Cohort is #{cohort}:"
+    students.each do |student|
+      puts "#{student[:name]} (#{student[:cohort]} cohort)" if student[:cohort] == cohort
+      puts ""
+    end
   end
 end
 
