@@ -4,14 +4,13 @@ def input_students
   puts "To finish, simply hit return twice"
   #create an empty array
   students = []
-  name = gets.chomp
+  #replace "chomp" method
+  name_entry = gets
+  name = name_entry.gsub(/\n/,"")
   #while name of student is non-zero
   while !name.empty?
     # ask for the other information
-    puts "Please enter hobby and height - press return after each"
-    hobby = gets.chomp
-    height = gets.chomp
-    students << {name: name, cohort: :november, hobbies: hobby, height: height}
+    students << {name: name, cohort: :november}
     puts "Now we have #{students.count} student#{students.count == 1 ? "" : "s"}"
     name = gets.chomp
   end
@@ -27,7 +26,7 @@ end
 #define printing names method
 def print(students)
   students.each do |student|
-    puts "#{student[:name]} (#{student[:cohort]} cohort) - likes #{student[:hobbies]}"
+    puts "#{student[:name]} (#{student[:cohort]} cohort)"
   end
 end
 
