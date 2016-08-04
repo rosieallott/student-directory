@@ -2,29 +2,22 @@
 
 #define method for taking input on names
 def input_students
-  puts "Please enter the names of the students"
-  puts "To finish, simply hit return twice"
+  puts "Please enter the names of the students. To finish, simply hit return twice"
   #create an empty array and define default cohort/ask for input
   name = STDIN.gets.chomp
-  cohort = :november
   #while name of student is non-zero
   while !name.empty?
-    # ask for the cohort
-      add_students(name, cohort)
+    @students << {name: name, cohort: :november}
     puts "Now we have #{@students.count} student#{@students.count == 1 ? "" : "s"}"
     name = STDIN.gets.chomp
   end
   @students
 end
 
-def add_students(name, cohort)
-  @students << {name: name, cohort: cohort.to_sym}
-end
-
 def interactive_menu
   loop do
     print_menu
-    process(STDIN.gets.chomp)
+    process(STDIN.gets.chomp.to_s)
   end
 end
 
@@ -44,20 +37,13 @@ def show_students
 end
 
 def process(selection)
-  case selection
-    when "1"
-      @students = input_students
-    when "2"
-      show_students
-    when "3"
-      save_students
-    when "4"
-      load_students
-    when "9"
-      exit #end the programme
-    else
-      puts "I didn't understand you"
-  end
+  hash = {"1" => @students = input_students,
+    "2" => show_students,
+    "3" => save_students_to_file,
+    "4" => manual_load_students,
+    "9" =>  exit} #end the programme
+  hash.default = "I didn't understand you"
+  hash[selection]
 end
 
 #define header method
@@ -79,7 +65,7 @@ def print_footer
   puts
 end
 
-def save_students
+def save_students_to_file
   #open the file for writing
   file = File.open("students.csv", "w")
   #iterate over array of students
@@ -92,25 +78,28 @@ def save_students
   file.close
 end
 
-def load_students(filename = "students.csv")
+def manual_load_students(filename = "students.csv")
   file = File.open(filename, "r")
   file.readlines.each do |line|
   name, cohort = line.chomp.split(",")
-    add_students(name, cohort)
+    @students << {name: name, cohort: cohort.to_sym}
   end
   file.close
+  puts "Loaded #{@students.count} students from #{filename}"
 end
 
-def try_load_students
-  filename = ARGV.first
-  return if filename.nil?
-  if File.exists?(filename)
-    load_students(filename)
-    puts "Loaded #{@students.count} from #{filename}"
+def initial_start_load_students(filename = "students.csv")
+  if ARGV.first.nil?
+    manual_load_students(filename)
   else
-    puts "Sorry, #{filename} doesn't exist"
+    filename = ARGV.first
+    if File.exists?(filename)
+      manual_load_students(filename)
+    else
+      puts "Sorry, #{filename} doesn't exist"
+    end
   end
 end
 
-try_load_students
+initial_start_load_students
 interactive_menu
