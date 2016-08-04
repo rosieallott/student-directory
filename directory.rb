@@ -78,7 +78,8 @@ def print_footer
 end
 
 def save_students_to_file
-  filename = gets.chomp
+  puts "Enter the filename you wish to save to"
+  filename = STDIN.gets.chomp
   #open the file for writing
   file = File.open(filename, "w")
   #iterate over array of students
