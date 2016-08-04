@@ -5,13 +5,18 @@ def input_students
   puts "Please enter the names of the students. To finish, simply hit return twice"
   #create an empty array and define default cohort/ask for input
   name = STDIN.gets.chomp
+  cohort = :november
   #while name of student is non-zero
   while !name.empty?
-    @students << {name: name, cohort: :november}
+    add_students(name, cohort)
     puts "Now we have #{@students.count} student#{@students.count == 1 ? "" : "s"}"
     name = STDIN.gets.chomp
   end
   @students
+end
+
+def add_students(name, cohort)
+  @students << {name: name, cohort: cohort.to_sym}
 end
 
 def interactive_menu
@@ -37,13 +42,20 @@ def show_students
 end
 
 def process(selection)
-  hash = {"1" => @students = input_students,
-    "2" => show_students,
-    "3" => save_students_to_file,
-    "4" => manual_load_students,
-    "9" =>  exit} #end the programme
-  hash.default = "I didn't understand you"
-  hash[selection]
+  case selection
+    when "1"
+      @students = input_students
+    when "2"
+      show_students
+    when "3"
+      save_students_to_file
+    when "4"
+      load_students
+    when "9"
+      exit #end the programme
+    else
+      puts "I didn't understand you"
+  end
 end
 
 #define header method
@@ -66,8 +78,9 @@ def print_footer
 end
 
 def save_students_to_file
+  filename = "students.csv"
   #open the file for writing
-  file = File.open("students.csv", "w")
+  file = File.open(filename, "w")
   #iterate over array of students
   @students.each do |student|
     #make an array of student data then join into a string
@@ -76,27 +89,29 @@ def save_students_to_file
     file.puts csv_line
   end
   file.close
+  puts "Successfully saved your data to #{filename}"
 end
 
-def manual_load_students(filename = "students.csv")
+def load_students(filename = "students.csv")
   file = File.open(filename, "r")
   file.readlines.each do |line|
   name, cohort = line.chomp.split(",")
-    @students << {name: name, cohort: cohort.to_sym}
+    add_students(name, cohort)
   end
   file.close
   puts "Loaded #{@students.count} students from #{filename}"
 end
 
-def initial_start_load_students(filename = "students.csv")
-  if ARGV.first.nil?
-    manual_load_students(filename)
+def initial_start_load_students
+  filename = ARGV.first
+  if filename.nil?
+    load_students
   else
-    filename = ARGV.first
     if File.exists?(filename)
-      manual_load_students(filename)
+      load_students(filename)
     else
       puts "Sorry, #{filename} doesn't exist"
+      load_students
     end
   end
 end
