@@ -78,7 +78,7 @@ def print_footer
 end
 
 def save_students_to_file
-  filename = "students.csv"
+  filename = gets.chomp
   #open the file for writing
   file = File.open(filename, "w")
   #iterate over array of students
