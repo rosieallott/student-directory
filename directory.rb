@@ -94,16 +94,19 @@ def load_students(filename = "students.csv")
     @students << {name: name, cohort: cohort.to_sym}
   end
   file.close
+  puts "Loaded #{@students.count} students from #{filename}"
 end
 
-def try_load_students
-  filename = ARGV.first
-  return if filename.nil?
-  if File.exists?(filename)
+def try_load_students(filename = "students.csv")
+  if ARGV.first.nil?
     load_students(filename)
-    puts "Loaded #{@students.count} from #{filename}"
   else
-    puts "Sorry, #{filename} doesn't exist"
+    filename = ARGV.first
+    if File.exists?(filename)
+      load_students(filename)
+    else
+      puts "Sorry, #{filename} doesn't exist"
+    end
   end
 end
 
