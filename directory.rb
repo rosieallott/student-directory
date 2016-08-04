@@ -6,14 +6,19 @@ def input_students
   puts "To finish, simply hit return twice"
   #create an empty array and define default cohort/ask for input
   name = STDIN.gets.chomp
+  cohort = :november
   #while name of student is non-zero
   while !name.empty?
     # ask for the cohort
-    @students << {name: name, cohort: :november}
+      add_students(name, cohort)
     puts "Now we have #{@students.count} student#{@students.count == 1 ? "" : "s"}"
     name = STDIN.gets.chomp
   end
   @students
+end
+
+def add_students(name, cohort)
+  @students << {name: name, cohort: cohort.to_sym}
 end
 
 def interactive_menu
@@ -91,22 +96,19 @@ def load_students(filename = "students.csv")
   file = File.open(filename, "r")
   file.readlines.each do |line|
   name, cohort = line.chomp.split(",")
-    @students << {name: name, cohort: cohort.to_sym}
+    add_students(name, cohort)
   end
   file.close
-  puts "Loaded #{@students.count} students from #{filename}"
 end
 
-def try_load_students(filename = "students.csv")
-  if ARGV.first.nil?
+def try_load_students
+  filename = ARGV.first
+  return if filename.nil?
+  if File.exists?(filename)
     load_students(filename)
+    puts "Loaded #{@students.count} from #{filename}"
   else
-    filename = ARGV.first
-    if File.exists?(filename)
-      load_students(filename)
-    else
-      puts "Sorry, #{filename} doesn't exist"
-    end
+    puts "Sorry, #{filename} doesn't exist"
   end
 end
 
