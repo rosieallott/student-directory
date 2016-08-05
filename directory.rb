@@ -33,6 +33,7 @@ def print_menu
   puts "2. Show the students"
   puts "3. Save the list to a file of your choosing"
   puts "4. Load the list of saved students"
+  puts "5. Show source code of this programme"
   puts "9. Exit"
 end
 
@@ -52,11 +53,19 @@ def process(selection)
       save_students_to_file
     when "4"
       load_students
+    when "5"
+      print_source_code
     when "9"
       exit #end the programme
     else
       puts "I didn't understand you"
   end
+end
+
+def print_source_code
+  file = File.open(__FILE__,"r")
+  puts file.read
+  file.close
 end
 
 #define header method
